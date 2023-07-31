@@ -5,3 +5,11 @@ Windows:
 
 Linux/Mac
     .venv/bin/activate
+
+
+---- Start Server ----
+Windows:
+    flask run
+
+Linux/Mac:
+    flask run
