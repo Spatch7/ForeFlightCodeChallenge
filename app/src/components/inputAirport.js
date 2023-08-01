@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const TextField = () => {
+const TextField = ({ onReceiveData }) => {
   const [textValue, setTextValue] = useState('');
   const [responseMessage, setResponseMessage] = useState('');
 
-  // Event handler to update the state when the user types in the input field
   const handleInputChange = (event) => {
     setTextValue(event.target.value);
   };
 
-  // Event handler for submitting the text to the Flask server
   const handleSubmit = () => {
-    // Replace 'YOUR_FLASK_API_ENDPOINT' with the actual URL of your Flask API endpoint
     fetch('/api/submit_text', {
       method: 'POST',
       headers: {
@@ -21,6 +18,9 @@ const TextField = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        // Call the callback function with the received JSON data
+        onReceiveData(data);
+
         setResponseMessage(data.message);
       })
       .catch((error) => {

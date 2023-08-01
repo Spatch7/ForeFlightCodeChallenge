@@ -1,0 +1,14 @@
+
+Time log:
+    set up FE and BE server: 30 min
+    parse through API data: 2 hr
+    methods for calculations: 30 min
+
+
+Areas for improvment:
+    Better documentation
+    Improve UI/UX
+    More error handling
+    Figure out a way to get the wind direction more consistently, possibly using forecast data if consistent, 
+        possibly observe previous wind data by airport to see if wind patterns are typically erradic or not, 
+        and thus suitable for wind direction predictions.
