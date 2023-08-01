@@ -13,6 +13,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "startWin": "waitress-serve --listen=:5000 main:app",
+    "startUni":"gunicorn -b :5000 main:app",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
