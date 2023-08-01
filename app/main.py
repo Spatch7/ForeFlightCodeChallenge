@@ -1,7 +1,8 @@
 
 
+import datetime
 import os
-import time
+from datetime import datetime
 # from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 # from flask_cors import CORS
@@ -55,7 +56,7 @@ def submit_airport():
 
 def extract_conditions_data(response_data):   
     # print(response_data)
-    wind_directions = []
+    forecast_report = []
     temperature_C = response_data.get('report', {}).get('conditions', {}).get('tempC', None)
     realative_humidity = response_data.get('report', {}).get('conditions', {}).get('relativeHumidity', None)
     visibility = response_data.get('report', {}).get('conditions', {}).get('visibility', None)
@@ -64,25 +65,47 @@ def extract_conditions_data(response_data):
     cloud_coverage = response_data.get('report', {}).get('conditions', {}).get('text', None)
     cloud_layers1 = response_data.get('report', {}).get('conditions', {}).get('cloudLayers', None)
     cloud_layers2 = response_data.get('report', {}).get('conditions', {}).get('cloudLayersV2', None)
-    
-    for condition in response_data.get('report', {}).get('forecast', {}).get('conditions', []):
-        wind_dir = condition.get('wind', {}).get('direction', None)
-        cardinal_dir = degrees_to_cardinal(wind_dir)
-        wind_directions.append(cardinal_dir) if cardinal_dir is not None else None
+    wind_direction = response_data['report']['conditions']['wind']['direction']
+    wind_direction = degrees_to_cardinal(wind_direction)
+    wind_speed = knots_to_mph(wind_speed)
 
-    # data_field2 = response_data.['report']['forecast']['conditions'].get('cloudLayersV2', None)
-    # data_field2 = response_data.get('field2', None)
-    # data_field2 = response_data.get('field2', None)
-    # ...
+    #  --- Create Forecast Report ---
+    start_time = response_data.get('report', {}).get('forecast', {}).get('period').get('dateStart')
+    # print(response_data.get('report', {}).get('forecast', {}).get('conditions', []))
+    # print('-----------------')
+    # print('-----------------')
+    # print('-----------------')
+    for current_day, condition in enumerate(response_data.get('report', {}).get('forecast', {}).get('conditions', [])):
+        # Skip the first and last loop of conditions
+        if current_day == 1 or current_day == 2:
+            current_time = condition.get('dateIssued', None)
+            wind_speed_kts = condition.get('wind', {}).get('speedKts', None)
+            wind_direction_degrees = condition.get('wind', {}).get('direction', None)
 
-    # Process the data as needed
-    # ...
+            # Calculate the time offset
+            time_offset = calculate_time_offset(start_time, current_time)
+            wind_speed_mph = knots_to_mph(wind_speed_kts)
+            forecast_data = {
+                'time_offset': time_offset,
+                'wind_speed_mph': wind_speed_mph,
+                'wind_direction_degrees': wind_direction_degrees
+            }
+            forecast_report.append(forecast_data)
 
-    # return {
-    #     'field1': data_field1,
-    #     'field2': data_field2,
-    #     # ...
-    # }
+    condition_data = {
+        'temperature_C': temperature_C,
+        'relative_humidity': realative_humidity,
+        'visibility': visibility,
+        'wind_speed': wind_speed,
+        'humidity': humidity,
+        'cloud_coverage': cloud_coverage,
+        'cloud_layers1': cloud_layers1,
+        'cloud_layers2': cloud_layers2,
+        'wind_direction': wind_direction,
+        'forecast_report': forecast_report
+    }
+    print(condition_data)
+    return condition_data
 
 # Function to extract data from the airport_response
 def extract_airport_data(response_data):
@@ -121,6 +144,18 @@ def degrees_to_cardinal(degrees):
         return directions[index]
     else:
         return None
+
+def knots_to_mph(knots):
+    return knots * 1.15078
+
+# Function to calculate the time offset in hrs:min
+def calculate_time_offset(start_time_str, current_time_str):
+    start_time = datetime.strptime(start_time_str, '%Y-%m-%dT%H:%M:%S%z')
+    current_time = datetime.strptime(current_time_str, '%Y-%m-%dT%H:%M:%S%z')
+    time_difference = current_time - start_time
+    hours, remainder = divmod(time_difference.total_seconds(), 3600)
+    minutes, _ = divmod(remainder, 60)
+    return f"{int(hours):02d}:{int(minutes):02d}"
 
 # if __name__ == '__main__':
 #     port = int(os.environ.get("PORT", 5000))
