@@ -3,16 +3,11 @@
 import datetime
 import os
 from datetime import datetime
-# from dotenv import load_dotenv
 from flask import Flask, jsonify, request
-# from flask_cors import CORS
 import requests
 
-# load_dotenv()
 port = int(os.getenv('port', 5000))
-
 app = Flask(__name__, static_folder='./build', static_url_path='/')
-# CORS(app)
 
 
 @app.route('/')
@@ -43,13 +38,13 @@ def submit_airport():
     else:
         best_runway = calculate_best_runway(int(conditions_data['wind_direction']), airport_data['available_runways'])
 
+    # Package data for front-end
     combined_data = {
         'conditions': conditions_data,
         'airport': airport_data,
         'best_runway':best_runway
     }
 
-    # print(combined_data)
     # Send a response back to the React front-end
     return combined_data
 
@@ -87,7 +82,6 @@ def extract_conditions_data(response_data):
                 'wind_direction_degrees': wind_direction_degrees
             }
             forecast_report.append(forecast_data)
-        
 
     condition_data = {
         'temperature_C': temperature_C,
@@ -102,19 +96,16 @@ def extract_conditions_data(response_data):
         'wind_direction_card':wind_direction_card,
         'forecast_report': forecast_report
     }
-    # print(condition_data)
     return condition_data
 
 
 # Extract data from the airport_response
 def extract_airport_data(response_data):
-    # print(response_data)
     airport_identifier = response_data.get('faaCode', None)
     airport_name = response_data.get('name', None)
     available_runways = response_data.get('runways', None)
     latitude = response_data.get('latitude', None)
     longitude = response_data.get('longitude', None)
-
     airport_data = {
         'airport_identifier': airport_identifier,
         'airport_name': airport_name,
@@ -123,7 +114,6 @@ def extract_airport_data(response_data):
         'latitude': latitude,
         'longitude': longitude        
     }
-    # print(airport_data)
     return airport_data
 
 def degrees_to_cardinal(degrees):
@@ -142,6 +132,7 @@ def degrees_to_cardinal(degrees):
 def knots_to_mph(knots):
     return knots * 1.15078
 
+
 # Calculate the time offset in hrs:min
 def calculate_time_offset(start_time_str, current_time_str):
     start_time = datetime.strptime(start_time_str, '%Y-%m-%dT%H:%M:%S%z')
@@ -150,6 +141,7 @@ def calculate_time_offset(start_time_str, current_time_str):
     hours, remainder = divmod(time_difference.total_seconds(), 3600)
     minutes, _ = divmod(remainder, 60)
     return f"{int(hours):02d}:{int(minutes):02d}"
+
 
 def summerize_cloud_text(cloud_data):
     cloud_layers = cloud_data.split(" ")
@@ -162,6 +154,7 @@ def summerize_cloud_text(cloud_data):
         return max(cloud_coverage)
     else:
         return None
+
 
 def calculate_best_runway(wind_direction, available_runways):
     best_runway = None

@@ -1,5 +1,5 @@
 import React from 'react';
-import '../compass.css';
+import '../componentCSS/compass.css';
 
 const Compass = ({ angle }) => {
   return (

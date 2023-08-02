@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import '../componentCSS/inputAirport.css'
 
 const TextField = ({ onReceiveData }) => {
   const [textValue, setTextValue] = useState('');
@@ -29,7 +30,7 @@ const TextField = ({ onReceiveData }) => {
   };
 
   return (
-    <div>
+    <div className="inputID">
       <input
         type="text"
         value={textValue}

@@ -22,7 +22,6 @@ function App() {
     <div>
       <h1>Input Airport Identifier</h1>
       <TextField onReceiveData={handleSetJsonData} onLoading={handleLoading} />
-      <h1>Weather Information</h1>
       {isLoading ? (
         <p>Loading...</p>
       ) : (

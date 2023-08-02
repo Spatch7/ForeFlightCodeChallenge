@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import "../componentCSS/airportInformation.css"
 
 const AirportInfo = ({ data }) => {
   const {
@@ -22,7 +23,7 @@ const AirportInfo = ({ data }) => {
   } = data;
 
   return (
-    <div>
+    <div className="airport-info">
         
       <h2>Airport Information</h2>
       <p>
