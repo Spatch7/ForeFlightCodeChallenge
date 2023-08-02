@@ -50,19 +50,31 @@ const AirportInfo = ({ data }) => {
         Humidity: {humidity}
         <br />
         Cloud Coverage: {cloud_coverage}
-       </p>
-       <h2>Forecast Report For Next Two Periods</h2>
-       <ul>
-         {forecast_report.map((forecast, index) => (
-          <li key={index}>
-            Time Offset: {forecast.time_offset}
+      </p>
+
+      <h2>Forecast Report For Next Two Periods</h2>
+      <ul>
+        {forecast_report.length >= 1 && (
+          <li>
+            <h3>Period One:</h3>
+            Time Offset: {forecast_report[0].time_offset}
             <br />
-            Wind Speed (MPH): {forecast.wind_speed_mph}
+            Wind Speed (MPH): {forecast_report[0].wind_speed_mph}
             <br />
-            Wind Direction (degrees): {forecast.wind_direction_degrees}
+            Wind Direction (degrees): {forecast_report[0].wind_direction_degrees}
           </li>
-        ))}
-      </ul>
+        )}
+        {forecast_report.length >= 2 && (
+          <li>
+            <h3>Period Two:</h3>
+            Time Offset: {forecast_report[1].time_offset}
+            <br />
+            Wind Speed (MPH): {forecast_report[1].wind_speed_mph}
+            <br />
+            Wind Direction (degrees): {forecast_report[1].wind_direction_degrees}
+          </li>
+        )}
+    </ul> 
     </div>
   );
 };

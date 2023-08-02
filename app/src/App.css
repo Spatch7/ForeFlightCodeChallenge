@@ -8,26 +8,31 @@ body {
   text-align: center;
 }
 
-
 h1 {
   text-align: center;
   font-size: 28px;
   color: #2980b9; 
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 h2 {
   text-align: center;
   font-size: 22px;
-  color: #e74c3c; /* Aviation red color */
-  margin-bottom: 10px;
+  color: #e74c3c; 
 }
 
 .inputID {
   align-content: center;
 }
-/* Center the airport-info and compass sections */
+
+.best-runway {
+  font-size: 22px;
+  color: #e74c3c; 
+  margin-bottom: 5px; 
+}
+
 .airport-info,
 .compass {
   margin: 20px auto;
 }
+

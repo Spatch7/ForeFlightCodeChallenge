@@ -22,31 +22,40 @@ def hello():
 def submit_airport():
     data = request.get_json()
     text = data.get('text', '').upper()
-    FOREFLIGHT_CONDITIONS_URL = f"https://qa.foreflight.com/weather/report/{text}"
-    FOREFLIGHT_AIRPORT_URL = f"https://qa.foreflight.com/airports/{text}"
+    airport_identifiers = text.split()
+    res = []
 
-    # Call the ForeFlight API with the entered text
-    conditions_response = requests.get(FOREFLIGHT_CONDITIONS_URL, headers={'ff-coding-exercise': '1'})
-    airport_response = requests.get(FOREFLIGHT_AIRPORT_URL, headers={'ff-coding-exercise': '1'}, auth=('ff-interview', '@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9'))
+    for id in airport_identifiers:
+        FOREFLIGHT_CONDITIONS_URL = f"https://qa.foreflight.com/weather/report/{id}"
+        FOREFLIGHT_AIRPORT_URL = f"https://qa.foreflight.com/airports/{id}"
+        
+        # Call the ForeFlight API with the entered text
+        conditions_response = requests.get(FOREFLIGHT_CONDITIONS_URL, headers={'ff-coding-exercise': '1'})
+        airport_response = requests.get(FOREFLIGHT_AIRPORT_URL, headers={'ff-coding-exercise': '1'}, auth=('ff-interview', '@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9'))
+        
+        # If bad input, skip and do not append data
+        if not conditions_response.ok or not airport_response.ok:
+            continue
 
-    # Extract data from airport conditions and data, respectively.
-    conditions_data = extract_conditions_data(conditions_response.json())
-    airport_data = extract_airport_data(airport_response.json())
+        # Extract data from airport conditions and data, respectively.
+        conditions_data = extract_conditions_data(conditions_response.json())
+        airport_data = extract_airport_data(airport_response.json())
 
-    if conditions_data['wind_direction'] == None:
-        best_runway = None
-    else:
-        best_runway = calculate_best_runway(int(conditions_data['wind_direction']), airport_data['available_runways'])
+        if conditions_data['wind_direction'] == None:
+            best_runway = None
+        else:
+            best_runway = calculate_best_runway(int(conditions_data['wind_direction']), airport_data['available_runways'])
 
-    # Package data for front-end
-    combined_data = {
-        'conditions': conditions_data,
-        'airport': airport_data,
-        'best_runway':best_runway
-    }
+        # Package data for front-end
+        combined_data = {
+            'conditions': conditions_data,
+            'airport': airport_data,
+            'best_runway':best_runway
+        }
+        res.append(combined_data)
 
     # Send a response back to the React front-end
-    return combined_data
+    return jsonify(res)
 
 # Extract conditions data
 def extract_conditions_data(response_data):
@@ -59,10 +68,11 @@ def extract_conditions_data(response_data):
     cloud_coverage = response_data.get('report', {}).get('conditions', {}).get('text', None)
     cloud_layers1 = response_data.get('report', {}).get('conditions', {}).get('cloudLayers', None)
     cloud_layers2 = response_data.get('report', {}).get('conditions', {}).get('cloudLayersV2', None)
-    wind_direction = response_data['report']['conditions']['wind'].get('direction', None)
+    wind_direction = response_data.get('report', {}).get('conditions', {}).get('wind', {}).get('direction', None)
     wind_direction_card = degrees_to_cardinal(wind_direction)
-    wind_speed = int(knots_to_mph(wind_speed))
-    cloud_coverage = summerize_cloud_text(cloud_coverage)
+    if wind_speed != None: wind_speed = (knots_to_mph(wind_speed))
+    if wind_speed != None: wind_speed = int(wind_speed)
+    if cloud_coverage != None: cloud_coverage = summerize_cloud_text(cloud_coverage)
 
     #  --- Create Forecast Report ---
     start_time = response_data.get('report', {}).get('forecast', {}).get('period').get('dateStart')
@@ -130,7 +140,10 @@ def degrees_to_cardinal(degrees):
         return None
 
 def knots_to_mph(knots):
-    return knots * 1.15078
+    if knots != None:
+        return knots * 1.15078
+    else:
+        return None
 
 
 # Calculate the time offset in hrs:min

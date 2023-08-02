@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../componentCSS/inputAirport.css'
+import '../componentCSS/inputAirport.css';
 
 const TextField = ({ onReceiveData }) => {
   const [textValue, setTextValue] = useState('');
@@ -19,10 +19,11 @@ const TextField = ({ onReceiveData }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Call the callback function with the received JSON data
+        // Call the callback function with the received JSON data list
         onReceiveData(data);
 
-        setResponseMessage(data.message);
+        // Set response message if applicable (depends on your API response)
+        setResponseMessage(data.message || '');
       })
       .catch((error) => {
         console.error('Error:', error);
