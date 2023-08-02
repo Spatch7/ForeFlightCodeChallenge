@@ -5,7 +5,7 @@
 }
 
 .button-container button {
-  width: 100px; /* Set a fixed width for the buttons */
+  width: 100px;
   padding: 8px 16px;
   margin: 5px;
   background-color: #3498db;
@@ -41,21 +41,18 @@
   margin: 10px 0;
 }
 
-/* Forecast report item style */
 .airport-info li {
   font-size: 14px;
   margin: 5px 0;
   display: flex;
 }
 
-/* Period label style */
 .airport-info li h3 {
   font-size: 16px;
   font-weight: bold;
-  width: 100px; /* Adjust the width as needed */
+  width: 100px; 
 }
 
-/* Forecast data style */
 .airport-info li p {
   font-size: 16px;
   margin: 0;
@@ -66,10 +63,10 @@
   justify-content: center;
 }
 
-/* Style for each forecast column */
+
 .forecast-column {
-  width: 250px; /* Set a fixed width for the columns */
-  margin: 10px;
-  padding: 10px;
+  width: 250px; 
+  margin: 5px;
+  padding: 5px;
   border: 1px solid #ccc;
 }

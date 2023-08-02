@@ -24,6 +24,11 @@ h2 {
 .inputID {
   align-content: center;
 }
+.runway-info-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 .best-runway {
   font-size: 22px;
@@ -33,6 +38,6 @@ h2 {
 
 .airport-info,
 .compass {
-  margin: 20px auto;
+  margin: 10px auto;
 }
 

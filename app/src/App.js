@@ -37,16 +37,22 @@ function App() {
         <p>Loading...</p>
       ) : jsonDataList.length > 0 && (
         <div>
-          <div className="button-container">
-            <button onClick={handlePrevious}>Previous</button>
-            <button onClick={handleNext}>Next</button>
-          </div>
+          {jsonDataList.length > 1 && ( 
+            <div className="button-container">
+              <button onClick={handlePrevious}>Previous</button>
+              <button onClick={handleNext}>Next</button>
+            </div>
+          )}
           <AirportInfo data={jsonDataList[currentIndex]} />
           {jsonDataList[currentIndex].best_runway &&
             jsonDataList[currentIndex].best_runway.magneticHeading !== undefined && (
-              <div>
-                <h2>Best Runway: {jsonDataList[currentIndex].best_runway.name}</h2>
-                <Compass angle={jsonDataList[currentIndex].best_runway.magneticHeading} />
+              <div className="runway-info-container">
+                <div>
+                  <h2>Best Runway: {jsonDataList[currentIndex].best_runway.name}</h2>
+                </div>
+                <div>
+                  <Compass angle={jsonDataList[currentIndex].best_runway.magneticHeading} />
+                </div>
               </div>
             )}
         </div>

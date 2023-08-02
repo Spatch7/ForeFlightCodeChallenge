@@ -1,4 +1,4 @@
-
+# An application by Noah Calhoun
 
 import datetime
 import os
@@ -57,6 +57,7 @@ def submit_airport():
     # Send a response back to the React front-end
     return jsonify(res)
 
+# ------------------------------------------- Methods Section -------------------------------------------
 # Extract conditions data
 def extract_conditions_data(response_data):
     forecast_report = []
@@ -133,9 +134,10 @@ def extract_airport_data(response_data):
         'latitude': latitude,
         'longitude': longitude        
     }
-    # print(response_data)
     return airport_data
 
+
+# Converts degrees to cardinal directions
 def degrees_to_cardinal(degrees):
     directions = [
         "N", "NNE", "NE", "ENE",
@@ -149,6 +151,7 @@ def degrees_to_cardinal(degrees):
     else:
         return None
 
+# Converts knots to MPH
 def knots_to_mph(knots):
     if knots != None:
         return knots * 1.15078
@@ -166,6 +169,7 @@ def calculate_time_offset(start_time_str, current_time_str):
     return f"{int(hours):02d}:{int(minutes):02d}"
 
 
+# Parses through string, extracts highest cloud density
 def summerize_cloud_text(cloud_data):
     cloud_layers = cloud_data.split(" ")
     cloud_coverage = []
@@ -179,6 +183,7 @@ def summerize_cloud_text(cloud_data):
         return None
 
 
+# Calculates the best runway by finding minimal heading difference
 def calculate_best_runway(wind_direction, available_runways):
     best_runway = None
     smallest_angle_diff = float('inf')
