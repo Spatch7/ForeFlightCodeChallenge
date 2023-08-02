@@ -42,7 +42,6 @@ def submit_airport():
         best_runway = None
     else:
         best_runway = calculate_best_runway(int(conditions_data['wind_direction']), airport_data['available_runways'])
-        # print(best_runway)
 
     combined_data = {
         'conditions': conditions_data,
@@ -53,12 +52,9 @@ def submit_airport():
     # print(combined_data)
     # Send a response back to the React front-end
     return combined_data
-    # return jsonify({'message': 'Data received successfully'})
-
 
 # Extract conditions data
-def extract_conditions_data(response_data):   
-    # print(response_data)
+def extract_conditions_data(response_data):
     forecast_report = []
     temperature_C = response_data.get('report', {}).get('conditions', {}).get('tempC', None)
     realative_humidity = response_data.get('report', {}).get('conditions', {}).get('relativeHumidity', None)
@@ -70,7 +66,7 @@ def extract_conditions_data(response_data):
     cloud_layers2 = response_data.get('report', {}).get('conditions', {}).get('cloudLayersV2', None)
     wind_direction = response_data['report']['conditions']['wind'].get('direction', None)
     wind_direction_card = degrees_to_cardinal(wind_direction)
-    wind_speed = knots_to_mph(wind_speed)
+    wind_speed = int(knots_to_mph(wind_speed))
     cloud_coverage = summerize_cloud_text(cloud_coverage)
 
     #  --- Create Forecast Report ---
@@ -84,7 +80,7 @@ def extract_conditions_data(response_data):
 
             # Calculate the time offset
             time_offset = calculate_time_offset(start_time, current_time)
-            wind_speed_mph = knots_to_mph(wind_speed_kts)
+            wind_speed_mph = int(knots_to_mph(wind_speed_kts))
             forecast_data = {
                 'time_offset': time_offset,
                 'wind_speed_mph': wind_speed_mph,
