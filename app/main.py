@@ -25,34 +25,45 @@ def submit_airport():
     airport_identifiers = text.split()
     res = []
 
-    for id in airport_identifiers:
-        FOREFLIGHT_CONDITIONS_URL = f"https://qa.foreflight.com/weather/report/{id}"
-        FOREFLIGHT_AIRPORT_URL = f"https://qa.foreflight.com/airports/{id}"
-        
-        # Call the ForeFlight API with the entered text
-        conditions_response = requests.get(FOREFLIGHT_CONDITIONS_URL, headers={'ff-coding-exercise': '1'})
-        airport_response = requests.get(FOREFLIGHT_AIRPORT_URL, headers={'ff-coding-exercise': '1'}, auth=('ff-interview', '@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9'))
-        
-        # If bad input, skip and do not append data
-        if not conditions_response.ok or not airport_response.ok:
+    for airport_id in airport_identifiers:
+        FOREFLIGHT_CONDITIONS_URL = f"https://qa.foreflight.com/weather/report/{airport_id}"
+        FOREFLIGHT_AIRPORT_URL = f"https://qa.foreflight.com/airports/{airport_id}"
+
+        try:
+            # Call the ForeFlight API with the entered text
+            conditions_response = requests.get(FOREFLIGHT_CONDITIONS_URL, headers={'ff-coding-exercise': '1'})
+            airport_response = requests.get(FOREFLIGHT_AIRPORT_URL, headers={'ff-coding-exercise': '1'}, auth=('ff-interview', '@-*KzU.*dtP9dkoE7PryL2ojY!uDV.6JJGC9'))
+
+            # Check if the API requests were successful, otherwise skip this airport
+            if not conditions_response.ok or not airport_response.ok:
+                continue
+
+            # Extract data from airport conditions and data, respectively.
+            conditions_data = extract_conditions_data(conditions_response.json())
+            airport_data = extract_airport_data(airport_response.json())
+
+            if conditions_data['wind_direction'] is None:
+                best_runway = None
+            else:
+                best_runway = calculate_best_runway(int(conditions_data['wind_direction']), airport_data['available_runways'])
+
+            # Package data for front-end
+            combined_data = {
+                'conditions': conditions_data,
+                'airport': airport_data,
+                'best_runway': best_runway
+            }
+            res.append(combined_data)
+
+        except requests.exceptions.RequestException as e:
+            # Handle any exceptions related to API requests (e.g., connection errors)
+            print(f"Error while processing airport {airport_id}: {e}")
             continue
 
-        # Extract data from airport conditions and data, respectively.
-        conditions_data = extract_conditions_data(conditions_response.json())
-        airport_data = extract_airport_data(airport_response.json())
-
-        if conditions_data['wind_direction'] == None:
-            best_runway = None
-        else:
-            best_runway = calculate_best_runway(int(conditions_data['wind_direction']), airport_data['available_runways'])
-
-        # Package data for front-end
-        combined_data = {
-            'conditions': conditions_data,
-            'airport': airport_data,
-            'best_runway':best_runway
-        }
-        res.append(combined_data)
+        except ValueError as e:
+            # Handle JSON parsing errors
+            print(f"Error while parsing JSON for airport {airport_id}: {e}")
+            continue
 
     # Send a response back to the React front-end
     return jsonify(res)

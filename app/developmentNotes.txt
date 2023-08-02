@@ -1,14 +1,33 @@
-
 Time log:
-    set up FE and BE server: 30 min
-    parse through API data: 2 hr
-    methods for calculations: 30 min
+    Time to setting up server, 
+    and creating front-end and back-end: 5hrs
+    Time spent testing and cleaning up: 30 min
+
+
+How to use:
+    - Inputs are accepted as string characters according to airport identifiers. 
+    - Multiple inputs should be separated by spaces.
+    - If a "Best Runway" is available, it will be displayed at the bottom, 
+        as well as a visual indication in the form of a compass.
+
+
+Assumptions made during development:
+    - Occationally, the ForeFlight API will return null values for important data fields, such as wind speed or direction. 
+        When this is the case, the application displays "Unavailable"
+    - In order to determine if a runway is unavailable, I used the API values "rightTrafficBase" and "rightTrafficRecip" as references. 
+        If both of these are False, the runway is not considered available, and thus is not extracted as valid data. There may be instances in which
+        there is no runway available. In this case, there will not be a suggested "best runway", an illistration will not be displayed, and "None" will be 
+        displayed as available runways on the web application.
+    - Because there is no overhead images of the different airport runways, a compass is used to point in the direction of the best runway, 
+        using "magneticHeading" as the needle angle. 
 
 
 Areas for improvment:
-    Better documentation
-    Improve UI/UX
-    More error handling
-    Figure out a way to get the wind direction more consistently, possibly using forecast data if consistent, 
-        possibly observe previous wind data by airport to see if wind patterns are typically erradic or not, 
+    - Better documentation
+    - Improve UI/UX
+    - Error handling
+    - Confirm what the logic is for checking if a runway is available or not
+    - Figure out a way to get the wind direction more consistently, possibly using forecast data if consistent, 
+        or possibly observe previous wind data by airport to see if wind patterns are typically erradic or not, 
         and thus suitable for wind direction predictions.
+

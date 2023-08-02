@@ -1,27 +1,27 @@
+
+** Make sure you are in the folder <app> **
+
 ---- To activate virtual session ----
-Make sure you are in the folder <app>
 Windows:
     py -3 -m venv .venv
     .venv\Scripts\activate
-    npm install
-    pip install -r requirements.txt
 
 Linux/Mac
     python3 -m venv .venv
     . .venv/bin/activate
+
+---- Install Dependecies and build app ----
     npm install
     pip install -r requirements.txt
+    yarn build
 
 ---- Start Server ----
 Windows:
-    yarn build
     yarn startWin
 or
     waitress-serve --listen=:5000 main:app
     
-
 Linux/Mac:
-    yarn build
     yarn startUni
 or
     gunicorn -b :5000 main:app
