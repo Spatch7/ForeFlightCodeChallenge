@@ -24,7 +24,7 @@ const AirportInfo = ({ data }) => {
 
   return (
     <div className="airport-info">
-        
+
       <h2>Airport Information</h2>
       <p>
         Identifier: {airport_identifier}
@@ -37,44 +37,49 @@ const AirportInfo = ({ data }) => {
       </p>
       <h2>Current Weather Report</h2>
       <p>
-        Temperature (C): {temperature_C}
+        Temperature (C): {temperature_C !== null ? temperature_C : "Unavailable"}
         <br />
-        Relative Humidity (%): {relative_humidity}
+        Relative Humidity (%): {relative_humidity !== null ? relative_humidity : "Unavailable"}
         <br />
-        Visibility (Statute Miles): {visibility.distanceSm}
+        Visibility (Statute Miles): {visibility.distanceSm !== null ? visibility.distanceSm : "Unavailable"}
         <br />
-        Wind Speed (MPH): {wind_speed}
+        Wind Speed (MPH): {wind_speed !== null ? wind_speed : "Unavailable"}
         <br />
-        Wind Direction: {wind_direction_card}
+        Wind Direction: {wind_direction_card !== null ? wind_direction_card : "Unavailable"}
         <br />
-        Humidity: {humidity}
+        Humidity: {humidity !== null ? humidity : "Unavailable"}
         <br />
-        Cloud Coverage: {cloud_coverage}
+        Cloud Coverage: {cloud_coverage !== null ? cloud_coverage : "Unavailable"}
       </p>
 
       <h2>Forecast Report For Next Two Periods</h2>
-      <ul>
+      <div className="forecast-columns">
         {forecast_report.length >= 1 && (
-          <li>
+          <div className="forecast-column">
             <h3>Period One:</h3>
-            Time Offset: {forecast_report[0].time_offset}
-            <br />
-            Wind Speed (MPH): {forecast_report[0].wind_speed_mph}
-            <br />
-            Wind Direction (degrees): {forecast_report[0].wind_direction_degrees}
-          </li>
+            <p>
+              Time Offset: {forecast_report[0].time_offset !== null ? forecast_report[0].time_offset : "Unavailable"}
+              <br />
+              Wind Speed (MPH): {forecast_report[0].wind_speed_mph !== null ? forecast_report[0].wind_speed_mph : "Unavailable"}
+              <br />
+              Wind Direction (degrees): {forecast_report[0].wind_direction_degrees !== null ? forecast_report[0].wind_direction_degrees : "Unavailable"}
+            </p>
+          </div>
         )}
         {forecast_report.length >= 2 && (
-          <li>
+          <div className="forecast-column">
             <h3>Period Two:</h3>
-            Time Offset: {forecast_report[1].time_offset}
-            <br />
-            Wind Speed (MPH): {forecast_report[1].wind_speed_mph}
-            <br />
-            Wind Direction (degrees): {forecast_report[1].wind_direction_degrees}
-          </li>
+            <p>
+              Time Offset: {forecast_report[1].time_offset !== null ? forecast_report[1].time_offset : "Unavailable"}
+              <br />
+              Wind Speed (MPH): {forecast_report[1].wind_speed_mph !== null ? forecast_report[1].wind_speed_mph : "Unavailable"}
+              <br />
+              Wind Direction (degrees): {forecast_report[1].wind_direction_degrees !== null ? forecast_report[1].wind_direction_degrees : "Unavailable"}
+            </p>
+          </div>
         )}
-    </ul> 
+      </div>
+
     </div>
   );
 };

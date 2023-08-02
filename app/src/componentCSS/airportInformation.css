@@ -27,7 +27,7 @@
 .airport-info h2 {
   font-size: 24px;
   color: #e74c3c;
-  margin: 20px 0 10px; 
+  margin: 20px 0 5px;
 }
 
 .airport-info p {
@@ -38,10 +38,38 @@
 .airport-info ul {
   list-style: none;
   padding: 0;
-  margin: 10px 0; 
+  margin: 10px 0;
 }
 
+/* Forecast report item style */
 .airport-info li {
   font-size: 14px;
-  margin: 5px 0; 
+  margin: 5px 0;
+  display: flex;
+}
+
+/* Period label style */
+.airport-info li h3 {
+  font-size: 16px;
+  font-weight: bold;
+  width: 100px; /* Adjust the width as needed */
+}
+
+/* Forecast data style */
+.airport-info li p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.forecast-columns {
+  display: flex;
+  justify-content: center;
+}
+
+/* Style for each forecast column */
+.forecast-column {
+  width: 250px; /* Set a fixed width for the columns */
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
 }
