@@ -113,9 +113,18 @@ def extract_conditions_data(response_data):
 def extract_airport_data(response_data):
     airport_identifier = response_data.get('faaCode', None)
     airport_name = response_data.get('name', None)
-    available_runways = response_data.get('runways', None)
     latitude = response_data.get('latitude', None)
     longitude = response_data.get('longitude', None)
+    available_runways = response_data.get('runways', None)
+
+    remove_runway = []
+    for i, runway in enumerate(available_runways):
+        if not runway['rightTrafficBase'] and not runway['rightTrafficRecip']:
+            remove_runway.append(i)
+
+    for i in reversed(remove_runway):
+        available_runways.pop(i)
+
     airport_data = {
         'airport_identifier': airport_identifier,
         'airport_name': airport_name,
@@ -124,6 +133,7 @@ def extract_airport_data(response_data):
         'latitude': latitude,
         'longitude': longitude        
     }
+    # print(response_data)
     return airport_data
 
 def degrees_to_cardinal(degrees):

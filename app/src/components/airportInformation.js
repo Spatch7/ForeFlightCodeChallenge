@@ -20,7 +20,9 @@ const AirportInfo = ({ data }) => {
       latitude,
       longitude,
     },
+    
   } = data;
+  const runwayIdents = available_runways.map((runway) => runway.ident).join(', ');
 
   return (
     <div className="airport-info">
@@ -34,6 +36,8 @@ const AirportInfo = ({ data }) => {
         Latitude: {latitude}
         <br />
         Longitude: {longitude}
+        <br />
+        Available Runways: {runwayIdents && runwayIdents.length > 0 ? runwayIdents : "None"}
       </p>
       <h2>Current Weather Report</h2>
       <p>
