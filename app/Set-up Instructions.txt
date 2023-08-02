@@ -14,12 +14,14 @@ Linux/Mac
 
 ---- Start Server ----
 Windows:
+    yarn build
     yarn startWin
 or
     waitress-serve --listen=:5000 main:app
     
 
 Linux/Mac:
+    yarn build
     yarn startUni
 or
     gunicorn -b :5000 main:app
