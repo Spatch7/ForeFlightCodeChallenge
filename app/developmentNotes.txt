@@ -27,6 +27,7 @@ Areas for improvment:
     - Improve UI/UX
     - Error handling
     - Confirm what the logic is for checking if a runway is available or not
+    - Remove authenication key from being hard-coded in foreflight api call.
     - Figure out a way to get the wind direction more consistently, possibly using forecast data if consistent, 
         or possibly observe previous wind data by airport to see if wind patterns are typically erradic or not, 
         and thus suitable for wind direction predictions.
