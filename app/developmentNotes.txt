@@ -1,6 +1,6 @@
 Time log:
     Time to setting up server, 
-    and creating front-end and back-end: 5hrs
+    and creating front-end and back-end: 5.5hrs
     Time spent testing and cleaning up: 30 min
 
 
